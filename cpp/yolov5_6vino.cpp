@@ -76,7 +76,11 @@ void YOLOVINO::detect(Mat &image, vector<Detection> &outputs)
     for (size_t row = 0; row < m_inputH; row++) {
         for (size_t col = 0; col < m_inputW; col++) {
             for (size_t ch = 0; ch < m_numChannels; ch++) {
+#ifdef NCS2
+				data[m_imageSize * ch + row * m_inputW + col] = float(blob_image.at<cv::Vec3b>(row, col)[ch]);
+#else
 				data[m_imageSize * ch + row * m_inputW + col] = float(blob_image.at<cv::Vec3b>(row, col)[ch] / 255.0);
+#endif // NCS2
             }
         }
     }

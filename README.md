@@ -49,7 +49,7 @@ cmd = f"mo --input_model {file.with_suffix('.onnx')} --output_dir {f}"
 改为：
 
 ```
- cmd = f"mo --input_model {file.with_suffix('.onnx')} --output_dir {f}  --data_type=FP16"
+ cmd = f"mo --input_model {file.with_suffix('.onnx')} --output_dir {f} --scale=255 --data_type=FP16"
 ```
 
 执行export.py结束后，在weights目录下生成onnx文件和xxx_openvino_model目录

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <opencv2/opencv.hpp>
 #include <inference_engine.hpp>
+#define NOT_NCS2
 using namespace cv;
 using namespace dnn;
 using namespace std;
@@ -31,10 +32,15 @@ private:
     float m_nmsThreshold = 0.6;
     float m_confThreshold = 0.8;
 	
-	//NCS2为MYRIAD
-	const std::string m_deviceName = "CPU";//"GPU","MYRIAD"
+	//"CPU","GPU","MYRIAD"
+#ifdef NCS2
+	const std::string m_deviceName = "MYRIAD";
+	const std::string m_modelFilename = "configFiles/yolov5sNCS2.xml";
+#else
+	const std::string m_deviceName = "CPU";
+	const std::string m_modelFilename = "configFiles/yolov5s.onnx";
+#endif // NCS2
 	const std::string m_classfile = "configFiles/classes.txt";
-	const std::string m_modelFilename = "configFiles/yolov5s.xml";
     size_t m_numChannels = 0;
     size_t m_inputH = 0;
     size_t m_inputW = 0;
