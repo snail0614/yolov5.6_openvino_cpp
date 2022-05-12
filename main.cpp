@@ -3,7 +3,7 @@
 #include "opencv2/opencv.hpp"
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include "yolov5vino.h"
+#include "cpp/yolov5_6vino.h"
 using namespace std;
 using namespace cv;
 using namespace dnn;
