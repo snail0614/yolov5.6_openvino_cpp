@@ -28,7 +28,7 @@ openvino支持onnx和IR模型，yolov5.6中的export.py即可以进行转换
 
 如下：
 
-```python
+```
 parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'weights/yolov5s.pt', help='model.pt path(s)')
 .
 .
@@ -36,21 +36,21 @@ parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'weights/yo
 parser.add_argument('--include', nargs='+',
                         default=['onnx','openvino'],
                         help='torchscript, onnx, openvino, engine, coreml, saved_model, pb, tflite, edgetpu, tfjs')
-```python
+```
 
 另外，如果使用神经网络计算棒NCS2的话,需要将export.py中165行：
 
 （由于NCS2仅支持FP16，因此我们还需要将onnx模型转换为支持FP16的IR模型文件,需要pip安装openvino-dev,版本2021.4.2，和openvino_runtime一致）
 
-```python
+```
 cmd = f"mo --input_model {file.with_suffix('.onnx')} --output_dir {f}"
-```python
+```
 
 改为：
 
-```python
+```
  cmd = f"mo --input_model {file.with_suffix('.onnx')} --output_dir {f}  --data_type=FP16"
-```python
+```
 
 执行export.py结束后，在weights目录下生成onnx文件和xxx_openvino_model目录
 
