@@ -56,12 +56,12 @@ void YOLOVINO::loadClassList()
 
 Mat YOLOVINO::formatYolov5(const Mat &source)
 {
-	int col = source.cols;
-	int row = source.rows;
-	int max = MAX(col, row);
+    int col = source.cols;
+    int row = source.rows;
+    int max = MAX(col, row);
     Mat result = Mat::zeros(max, max, CV_8UC3);
     source.copyTo(result(Rect(0, 0, col, row)));
-	return result;
+    return result;
 }
  
  
@@ -77,9 +77,9 @@ void YOLOVINO::detect(Mat &image, vector<Detection> &outputs)
         for (size_t col = 0; col < m_inputW; col++) {
             for (size_t ch = 0; ch < m_numChannels; ch++) {
 #ifdef NCS2
-				data[m_imageSize * ch + row * m_inputW + col] = float(blob_image.at<cv::Vec3b>(row, col)[ch]);
+                data[m_imageSize * ch + row * m_inputW + col] = float(blob_image.at<cv::Vec3b>(row, col)[ch]);
 #else
-				data[m_imageSize * ch + row * m_inputW + col] = float(blob_image.at<cv::Vec3b>(row, col)[ch] / 255.0);
+                data[m_imageSize * ch + row * m_inputW + col] = float(blob_image.at<cv::Vec3b>(row, col)[ch] / 255.0);
 #endif // NCS2
             }
         }
@@ -88,15 +88,15 @@ void YOLOVINO::detect(Mat &image, vector<Detection> &outputs)
  
     m_inferRequest.Infer();
     auto output = m_inferRequest.GetBlob(m_outputName);
-	const float* detection_out = static_cast<PrecisionTrait<Precision::FP32>::value_type*>(output->buffer());
+    const float* detection_out = static_cast<PrecisionTrait<Precision::FP32>::value_type*>(output->buffer());
  
     //维度信息
     const SizeVector outputDims = output->getTensorDesc().getDims();//1,6300[25200],9
     auto end = std::chrono::high_resolution_clock::now();
     auto time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     cout << "time = " << time << endl;
-    float x_factor = float(input_image.cols / m_inputW);
-    float y_factor = float(input_image.rows / m_inputH);
+    float x_factor = float(input_image.cols) / m_inputW;
+    float y_factor = float(input_image.rows) / m_inputH;
     float *dataout = (float *)detection_out;
     const int dimensions = outputDims[2];
     const int rows = outputDims[1];
@@ -140,7 +140,7 @@ void YOLOVINO::detect(Mat &image, vector<Detection> &outputs)
         result.class_id = class_ids[idx];
         result.confidence = confidences[idx];
         result.box = boxes[idx];
-		outputs.push_back(result);
+        outputs.push_back(result);
     }
 }
  
